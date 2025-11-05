@@ -1,0 +1,25 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Node / Vite
+node_modules/
+dist/
+*.log
+
+# Python / Django
+venv/
+.env
+*.pyc
+__pycache__/
+db.sqlite3
+staticfiles/
+media/
+
+# IDE
+.vscode/
+.idea/
+
+# Django secrets
+*.env
+.env.*

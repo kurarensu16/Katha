@@ -1,0 +1,112 @@
+@import "tailwindcss";
+
+/* Custom colors for Tailwind v4 */
+@theme {
+  --color-primary-deep: #192A56;
+  --color-accent-teal: #00BCD4;
+  --color-bg-soft: #F0F2F5;
+  --color-text-dark: #333333;
+  --color-text-light: #FFFFFF;
+  --color-blue-light: #3B82F6;
+  --color-blue-medium: #2563EB;
+  --color-blue-dark: #1E40AF;
+  --color-blue-accent: #60A5FA;
+  --color-blue-sky: #0EA5E9;
+}
+
+/* Tagalogika Font - Baybayin-inspired font */
+@font-face {
+  font-family: 'Tagalogika';
+  src: url('/fonts/Tagalogika.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Base styles and font setup */
+@layer base {
+  :root {
+    /* Global theme tokens */
+    --app-bg: #ffffff;
+    --app-text: #111827; /* gray-900 */
+    color-scheme: light;
+  }
+  html.dark {
+    --app-bg: #0f172a; /* slate-900 */
+    --app-text: #e5e7eb; /* gray-200 */
+    color-scheme: dark;
+  }
+
+  * {
+    @apply box-border;
+  }
+  
+  body {
+    @apply font-sans antialiased;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    background-color: var(--app-bg);
+    color: var(--app-text);
+    transition: background-color .2s ease, color .2s ease;
+  }
+  
+  html {
+    @apply scroll-smooth;
+  }
+
+  /* Dark mode base palette */
+}
+
+/* Fallback dark overrides to support any lingering light utility classes */
+@layer base {
+  html.dark .bg-white { background-color: #1f2937 !important; }
+  html.dark .bg-gray-50 { background-color: #0f172a !important; }
+  html.dark .text-text-dark { color: #e5e7eb !important; }
+  html.dark .text-gray-600 { color: #cbd5e1 !important; }
+  html.dark .text-gray-500 { color: #94a3b8 !important; }
+  html.dark .border-gray-100, html.dark .border-gray-200 { border-color: #334155 !important; }
+  html.dark input, html.dark textarea, html.dark select {
+    background-color: #334155 !important;
+    color: #e5e7eb !important;
+    border-color: #475569 !important;
+  }
+  html.dark ::placeholder { color: #94a3b8 !important; }
+}
+
+/* Custom utility classes */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .font-tagalogika {
+    font-family: 'Tagalogika', sans-serif;
+  }
+}
+
+/* Improve readability in dark mode */
+@layer base {
+  html.dark h1, html.dark h2, html.dark h3, html.dark h4, html.dark h5, html.dark h6 {
+    color: #e2e8f0 !important; /* slate-200 */
+  }
+  html.dark p, html.dark li, html.dark .prose, html.dark .text-text-dark {
+    color: #cbd5e1 !important; /* slate-300 */
+  }
+  html.dark a { color: #93c5fd !important; } /* blue-300 */
+  html.dark a:hover { color: #60a5fa !important; }
+  html.dark small, html.dark .text-sm, html.dark .muted, html.dark .text-gray-500 { color: #94a3b8 !important; }
+  /* Force white text for Sidebar (safeguard) */
+  html.dark .sidebar-root, html.dark .sidebar-root * { color: #ffffff !important; }
+  html.dark .sidebar-root button:hover,
+  html.dark .sidebar-root button:focus {
+    background-color: #334155 !important; /* slate-700 */
+  }
+  html.dark .sidebar-root button:active {
+    background-color: #475569 !important; /* slate-600 */
+  }
+  html.dark .vote-score { color: #ffffff !important; }
+  
+  /* Keep avatar button text dark in dark mode */
+  html.dark button[aria-haspopup="menu"] {
+    color: #192A56 !important; /* primary-deep */
+  }
+}

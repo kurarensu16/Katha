@@ -1,5 +1,12 @@
 # Railway Nixpacks configuration for Django (Python)
 
+[phases.setup]
+aptPkgs = [
+  "default-libmysqlclient-dev",
+  "build-essential",
+  "pkg-config"
+]
+
 [phases.install]
 cmds = [
   "python -m pip install --upgrade pip",

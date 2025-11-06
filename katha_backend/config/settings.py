@@ -10,9 +10,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'change-me-in-env')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'False').lower() in ['1', 'true', 'yes']
 
-ALLOWED_HOSTS = []
+# Comma-separated hosts, e.g. ".up.railway.app,localhost"
+ALLOWED_HOSTS = [h.strip() for h in os.environ.get('ALLOWED_HOSTS', '').split(',') if h.strip()] or []
 
 # Application definition
 
@@ -70,13 +71,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'katha_db',           # <-- Replace with your database name
-        'USER': 'root',         # <-- Replace with your MySQL username
-        'PASSWORD': 'password',  # <-- Replace with your MySQL password
-        'HOST': '127.0.0.1',          # <-- Use 'localhost' or your server IP
-        'PORT': '3306',               # <-- Default MySQL port
-        
-        # Optional: Required for MySQL to handle timezones and specific character sets
+        'NAME': os.environ.get('DB_NAME', ''),
+        'USER': os.environ.get('DB_USER', ''),
+        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+        'HOST': os.environ.get('DB_HOST', ''),
+        'PORT': os.environ.get('DB_PORT', '3306'),
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
             'charset': 'utf8mb4',
@@ -107,9 +106,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # --- Custom Settings for Decoupled App ---
 
 # CORS Configuration
-CORS_ALLOWED_ORIGINS = [
-    # Allow the React frontend to access the Django API during development
-    # Your React app runs here via Vite's default port
+CORS_ALLOWED_ORIGINS = [o.strip() for o in os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',') if o.strip()] or [
     "http://127.0.0.1:5173",
     "http://localhost:5173",
 ]

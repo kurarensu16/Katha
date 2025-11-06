@@ -67,6 +67,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
+# Sites framework: ensure SITE_ID is set (used by admin/auth templates)
+SITE_ID = int(os.environ.get('SITE_ID', '1'))
+
 # Database
 DATABASES = {
     'default': {
@@ -110,6 +113,9 @@ CORS_ALLOWED_ORIGINS = [o.strip() for o in os.environ.get('CORS_ALLOWED_ORIGINS'
     "http://127.0.0.1:5173",
     "http://localhost:5173",
 ]
+
+# CSRF trusted origins (comma-separated list of origins, no trailing slashes)
+CSRF_TRUSTED_ORIGINS = [o.strip() for o in os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',') if o.strip()]
 
 # Django REST Framework Configuration
 REST_FRAMEWORK = {

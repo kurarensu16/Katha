@@ -1,19 +1,13 @@
 # Railway Nixpacks configuration for Django (Python)
 
 [phases.setup]
-aptPkgs = [
-  "default-libmysqlclient-dev",
-  "build-essential",
-  "pkg-config",
-  "python3-pip"
-]
+aptPkgs = []
 
 [phases.install]
 cmds = [
-  "curl -sS https://bootstrap.pypa.io/get-pip.py -o get-pip.py",
-  "python get-pip.py",
-  "python -m pip install --upgrade pip",
-  "python -m pip install --no-cache-dir -r requirements.txt"
+  "python3 -m venv /opt/venv || python -m venv /opt/venv",
+  "/opt/venv/bin/pip install --upgrade pip",
+  "/opt/venv/bin/pip install --no-cache-dir -r requirements.txt"
 ]
 
 # You can add build-time commands here if needed

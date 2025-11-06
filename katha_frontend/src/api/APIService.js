@@ -1,5 +1,5 @@
 // Base URL for the Django API
-const API_BASE_URL = 'http://127.0.0.1:8000/api/';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000/api/v1/';
 
 const APIService = {
     login: async (username, password) => {
@@ -63,13 +63,13 @@ const APIService = {
             headers['Authorization'] = `Bearer ${access}`;
         }
 
-        let response = await fetch(`${API_BASE_URL}v1/${endpoint}`, { ...options, headers });
+        let response = await fetch(`${API_BASE_URL}${endpoint}`, { ...options, headers });
 
         if (response.status === 401 && access) {
             const newAccess = await APIService.refreshToken();
             if (newAccess) {
                 headers['Authorization'] = `Bearer ${newAccess}`;
-                response = await fetch(`${API_BASE_URL}v1/${endpoint}`, { ...options, headers });
+                response = await fetch(`${API_BASE_URL}${endpoint}`, { ...options, headers });
             }
         }
 

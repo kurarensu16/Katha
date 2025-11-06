@@ -7,4 +7,4 @@ requests>=2.31
 # mysqlclient>=2.2
 # If mysqlclient fails to build on your platform, you can use PyMySQL instead:
 PyMySQL>=1.1
-
+djangorestframework-simplejwt>=5.3.1

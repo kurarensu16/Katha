@@ -120,10 +120,14 @@ const AuthForm = ({ type }) => {
             // Render Google sign-in button
             const buttonContainer = document.getElementById('google-signin-button');
             if (buttonContainer && !buttonContainer.hasChildNodes()) {
+                const containerWidth = buttonContainer.offsetWidth || buttonContainer.clientWidth || 320;
+                const buttonWidth = Math.max(240, Math.min(containerWidth, 400)); // Google allows 120-400px
+                
+                buttonContainer.innerHTML = '';
                 window.google.accounts.id.renderButton(buttonContainer, {
                     theme: 'outline',
                     size: 'large',
-                    width: '100%',
+                    width: buttonWidth,
                     text: 'signin_with'
                 });
             }
@@ -135,7 +139,7 @@ const AuthForm = ({ type }) => {
 
     return (
         <div className="max-w-md mx-auto p-8 rounded-lg shadow-2xl mt-10 bg-white dark:bg-slate-800 border-2 border-blue-200 dark:border-slate-700">
-            <h2 className="text-3xl font-bold mb-6 text-center text-primary-deep dark:text-slate-100 bg-gradient-to-r from-blue-dark to-blue-medium bg-clip-text text-transparent dark:from-blue-accent dark:to-blue-medium">
+            <h2 className="text-3xl font-bold leading-tight mb-6 text-center dark:text-slate-100 bg-linear-to-r from-blue-dark to-blue-medium bg-clip-text text-transparent dark:from-blue-accent dark:to-blue-medium">
                 {isLogin ? 'Log In to Katha' : 'Register for Katha'}
             </h2>
             <form onSubmit={handleSubmit} className="space-y-5">

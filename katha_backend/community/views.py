@@ -27,6 +27,14 @@ class UserDetailView(generics.RetrieveUpdateAPIView):
         return self.request.user
 
 
+class UserProfileView(generics.RetrieveAPIView):
+    """API view to get user profile by username (read-only)."""
+    serializer_class = UserSerializer
+    permission_classes = [AllowAny]
+    lookup_field = 'username'
+    queryset = User.objects.all()
+
+
 # --- FEEDBACK VIEW ---
 class FeedbackView(generics.ListCreateAPIView):
     queryset = Feedback.objects.all()

@@ -22,25 +22,39 @@ const ProfilePage = () => {
         const fetchUserProfile = async () => {
             setLoading(true);
             try {
-                const response = await APIService.fetch('posts/');
+                // Fetch user profile data and posts in parallel
+                const [userResponse, postsResponse] = await Promise.all([
+                    APIService.fetch(`user/${targetUsername}/`),
+                    APIService.fetch('posts/')
+                ]);
                 
-                if (response.ok) {
-                    const allPosts = await response.json();
+                if (postsResponse.ok) {
+                    const allPosts = await postsResponse.json();
                     // Filter posts by target username
                     const filtered = allPosts.filter(post => 
                         post.author_username === targetUsername
                     );
                     setUserPosts(filtered);
                     
-                    // Set profile user info from first post (or use current user)
-                    if (filtered.length > 0) {
+                    // Get user profile data
+                    let userData = null;
+                    if (userResponse.ok) {
+                        userData = await userResponse.json();
                         setProfileUser({
-                            username: filtered[0].author_username,
-                            // We don't have other user info from the API, so we'll use what we have
+                            username: userData.username,
+                            date_joined: userData.date_joined
                         });
-                    } else if (targetUsername) {
-                        // User exists but has no posts
-                        setProfileUser({ username: targetUsername });
+                    } else {
+                        // Fallback: use earliest post date or current date
+                        const earliestPost = filtered.length > 0 
+                            ? filtered.reduce((earliest, post) => 
+                                new Date(post.created_at) < new Date(earliest.created_at) ? post : earliest
+                              )
+                            : null;
+                        setProfileUser({
+                            username: targetUsername,
+                            date_joined: earliestPost ? earliestPost.created_at : new Date().toISOString()
+                        });
                     }
                     
                     // Calculate stats
@@ -55,7 +69,7 @@ const ProfilePage = () => {
                     });
                     setError(null);
                 } else {
-                    console.error("Failed to fetch posts:", response.status);
+                    console.error("Failed to fetch posts:", postsResponse.status);
                     setError("Could not load user profile.");
                 }
             } catch (err) {
@@ -93,7 +107,9 @@ const ProfilePage = () => {
                             {targetUsername || 'User'}
                         </h1>
                         <p className="text-gray-600 dark:text-gray-400 mt-1">
-                            Member since {new Date().toLocaleDateString()}
+                            Member since {profileUser?.date_joined 
+                                ? new Date(profileUser.date_joined).toLocaleDateString()
+                                : new Date().toLocaleDateString()}
                         </p>
                     </div>
                 </div>

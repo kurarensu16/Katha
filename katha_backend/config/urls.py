@@ -21,6 +21,8 @@ urlpatterns = [
     path('api/v1/register/', community_views.UserRegistrationView.as_view(), name='user_register'),
     # Current User Details
     path('api/v1/user/me/', community_views.UserDetailView.as_view(), name='user_detail'),
+    # User Profile by Username
+    path('api/v1/user/<str:username>/', community_views.UserProfileView.as_view(), name='user_profile'),
     
     # SSO/OAuth Endpoints
     path('api/v1/auth/google/', community_views.google_oauth, name='google_oauth'),

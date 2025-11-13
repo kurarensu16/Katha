@@ -8,12 +8,12 @@ from django.core import exceptions as django_exceptions
 # --- AUTHENTICATION SERIALIZER ---
 class UserSerializer(serializers.ModelSerializer):
     """Serializer for User registration and updates."""
-    password = serializers.CharField(write_only=True, required=True)
+    password = serializers.CharField(write_only=True, required=False)
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'password', 'email')
-        read_only_fields = ('id',)
+        fields = ('id', 'username', 'password', 'email', 'date_joined')
+        read_only_fields = ('id', 'date_joined')
     
     def validate_username(self, value):
         """Validate username format and uniqueness."""
@@ -65,7 +65,7 @@ class UserSerializer(serializers.ModelSerializer):
         if self.instance is None:
             password = attrs.get('password')
             if not password:
-                raise serializers.ValidationError({'password': 'Password is required.'})
+                raise serializers.ValidationError({'password': 'Password is required when creating a user.'})
 
             # Build a temporary user object for contextual validators
             temp_user = User(username=attrs.get('username') or '')

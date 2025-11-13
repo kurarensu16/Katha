@@ -84,7 +84,7 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ['id', 'post', 'author', 'author_username', 'text', 'created_at', 'edited_at', 'is_edited', 'parent', 'votes', 'user_vote', 'replies']
-        read_only_fields = ('author', 'post', 'parent', 'votes', 'user_vote', 'edited_at', 'is_edited', 'created_at')
+        read_only_fields = ('author', 'votes', 'user_vote', 'edited_at', 'is_edited', 'created_at')
 
     def get_replies(self, obj):
         # Recursively serialize replies for nested comments

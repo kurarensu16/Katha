@@ -50,7 +50,7 @@ const FeedPage = () => {
             } catch (err) {
                 console.error("Network or parsing error:", err);
                 setAllPosts(mockPosts);
-                setError("Network connection issue with Django API. Showing mock data.");
+                setError("The backend API is currently not available and will be moved to a different host soon. Showing mock data.");
             } finally {
                 setLoading(false);
             }
